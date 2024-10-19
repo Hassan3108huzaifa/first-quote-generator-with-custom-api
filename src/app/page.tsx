@@ -1,38 +1,41 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Loader2 } from "lucide-react"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 
 interface Data {
-  author: string
-  quote: string
+  author: string;
+  quote: string;
 }
 
 export default function Home() {
-  const [data, setData] = useState<Data | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState<Data | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleQuote = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await fetch('/api/data')
-      const result = await response.json()
+      const response = await fetch('/api/data');
+      const result = await response.json();
+
+      console.log("API Response:", result); // Log the API response
+
       if (result && result.randomQuotes && result.randomQuotes.quote && result.randomQuotes.author) {
-        setData(result.randomQuotes)
+        setData(result.randomQuotes);
       } else {
-        console.error("Invalid data structure:", result)
-        setData(null)
+        console.error("Invalid data structure:", result);
+        setData(null);
       }
     } catch (error) {
-      console.error("Error fetching data:", error)
-      setData(null)
+      console.error("Error fetching data:", error);
+      setData(null);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-purple-700 via-pink-500 to-red-500">
@@ -54,7 +57,6 @@ export default function Home() {
                 className="text-center"
               >
                 <p className="text-xl font-semibold text-gray-700 mb-4">&quot;{data.quote}&quot;</p>
-
                 <p className="text-lg text-gray-600">- {data.author}</p>
               </motion.div>
             ) : (
@@ -85,5 +87,5 @@ export default function Home() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
