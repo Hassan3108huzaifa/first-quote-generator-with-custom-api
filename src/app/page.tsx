@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,9 +20,6 @@ export default function Home() {
     try {
       const response = await fetch('/api/data');
       const result = await response.json();
-
-      console.log("API Response:", result); // Log the API response
-
       if (result && result.randomQuotes && result.randomQuotes.quote && result.randomQuotes.author) {
         setData(result.randomQuotes);
       } else {
@@ -36,6 +33,11 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+
+  // Fetch a random quote when the component mounts
+  useEffect(() => {
+    handleQuote();
+  }, []); // Empty dependency array ensures this runs once on mount
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-purple-700 via-pink-500 to-red-500">
