@@ -104,13 +104,17 @@ const quotes = [
     { "author": "Mirza Ghalib", "quote": "Ishq par zor nahi, hai yeh woh aatish Ghalib, jo lagaye na lage, aur bujhaye na bujhe" }
   ]
 export async function GET() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    const randomQuotes = quotes[randomIndex];
+    try {
+        const randomIndex: number = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
 
-    console.log("Random Index:", randomIndex); // Log the random index
-    console.log("Selected Quote:", randomQuotes); // Log the selected quote
+        // Log to Vercel's console
+        console.log("Random Quote Index:", randomIndex); // Debug log
+        console.log("Random Quote Data:", randomQuote); // Debug log
 
-    const response = NextResponse.json({ randomQuotes });
-    response.headers.append('Cache-Control', 'no-store'); // Prevent caching
-    return response;
+        return NextResponse.json({ randomQuotes: randomQuote });
+    } catch (error) {
+        console.error("Error fetching quote:", error); // Log error
+        return NextResponse.json({ error: "Error fetching quote" }, { status: 500 });
+    }
 }
